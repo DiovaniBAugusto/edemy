@@ -8,9 +8,9 @@ const Register = ()=>{
 
     
 
-    const [name, setName] = useState("diovani");
-    const [email, setEmail] = useState("diovani@gmail.com");
-    const [password, setPassword] = useState("senha123");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
    
