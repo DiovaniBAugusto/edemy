@@ -1,13 +1,25 @@
-import React, {useState} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import axios from 'axios'
 import Link from 'next/link'
 import {toast} from 'react-toastify'
+import {Context} from '../context'
+import { useRouter } from 'next/router'
 
 
 const Login = ()=>{
 
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
+
+    const {state: {user}, dispatch} = useContext(Context);
+    
+
+    const router = useRouter();
+
+    useEffect(()=>{
+        if(user !== null)
+            router.push("/");
+    },[user])
 
     const handleSubmit = async (e) =>{
         e.preventDefault();
@@ -16,7 +28,18 @@ const Login = ()=>{
                 email,
                 password
             });
-            toast.success("usuario encontrado");
+            
+            //salvando as informações do usuário no contexto da aplicação
+            dispatch({
+                type: "LOGIN",
+                payload: data
+            })       
+            //salvando as mesmas informação no localStorage
+            window.localStorage.setItem("user",JSON.stringify(data));
+            
+            //redirecionando o usuário a rota principal
+            router.push("/");
+
         }catch(err){
             toast.error(err.response.data);
         }

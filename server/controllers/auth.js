@@ -39,7 +39,7 @@ export const register = async (req,res)=>{
             password : passwordHashed
         })
         await user.save();
-        console.log(user);
+       
         return res.json({ok: true});
 
     } catch(err){
@@ -63,6 +63,7 @@ export const login = async (req,res)=>{
             .send("A senha precisa possuir ao menos 6 caracteres");
 
         let user = await User.findOne({ email: email}).exec();
+        
         if(!user)
             return res
             .status(400)
@@ -83,10 +84,19 @@ export const login = async (req,res)=>{
         res.cookie("token", token, {
             httpOnly: true
         })
-        
+
         return res.status(200).json({user});
         
     }catch(err){
         res.send(err)
+    }
+}
+
+export const logout = (req, res)=>{
+    try{
+        res.clearCookie("token");
+        res.json({message: "sessão encerrada com sucesso"})
+    }catch(err){
+        console.log(err)
     }
 }

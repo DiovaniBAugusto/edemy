@@ -1,12 +1,21 @@
-import React, { useState } from "react"
+import React, { useState, useContext, useEffect} from "react"
 import axios from 'axios'
 import {toast} from 'react-toastify'
 import { SyncOutlined } from "@ant-design/icons"
 import Link from 'next/link'
+import { Context } from "../context"
+import { useRouter } from "next/router"
 
 const Register = ()=>{
 
-    
+    const router = useRouter();
+
+    const {state:{user}} = useContext(Context);
+
+    useEffect(()=>{
+        if(user !== null)
+            router.push("/")
+    }, [user])
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
